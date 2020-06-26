@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1894.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Courier}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Courier; min-height: 13.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Courier; color: #008000}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Courier; color: #000080}
+    span.s1 {color: #000080}
+    span.s2 {color: #000000}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">Sub</span> Multiple_year_stock_data()</p>
+<p class="p2"><br></p>
+<p class="p3">'define all terms</p>
+<p class="p4">Dim<span class="s2"> Ticker </span>As<span class="s2"> </span>String</p>
+<p class="p4">Dim<span class="s2"> YearOpen </span>As<span class="s2"> </span>Double</p>
+<p class="p1"><span class="s1">Dim</span> YearClose <span class="s1">As</span> <span class="s1">Double</span></p>
+<p class="p1"><span class="s1">Dim</span> StockVolume <span class="s1">As</span> <span class="s1">Double</span></p>
+<p class="p1"><span class="s1">Dim</span> SummaryTableRow <span class="s1">As</span> <span class="s1">Integer</span></p>
+<p class="p4">Dim<span class="s2"> Start </span>As<span class="s2"> </span>Long</p>
+<p class="p1"><span class="s1">Dim</span> PercentChange <span class="s1">As</span> <span class="s1">Double</span></p>
+<p class="p2"><br></p>
+<p class="p3">'define the last row</p>
+<p class="p1">lastrow = Cells(Rows.Count, 1).End(xlUp).Row</p>
+<p class="p2"><br></p>
+<p class="p1">YearOpen = 0</p>
+<p class="p1">YearClose = 0</p>
+<p class="p1">StockVolume = 0</p>
+<p class="p1">SummaryTableRow = 2</p>
+<p class="p1">Start = 2</p>
+<p class="p1">PercentChange = 0</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">For</span> i = 2 <span class="s1">To</span> lastrow</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span><span class="s1">If</span> Cells(i, 1).Value &lt;&gt; Cells(i + 1, 1).Value <span class="s1">Then</span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>Ticker = Cells(i, 1).Value</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Cells(SummaryTableRow, 9).Value = Ticker</p>
+<p class="p1"><span class="Apple-converted-space">        </span>StockVolume = StockVolume + Cells(i, 7).Value</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Cells(SummaryTableRow, 12).Value = StockVolume</p>
+<p class="p1"><span class="Apple-converted-space">        </span>YearClose = Cells(i, 6).Value</p>
+<p class="p1"><span class="Apple-converted-space">        </span>YearOpen = Cells(Start, 3).Value</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Cells(SummaryTableRow, 10).Value = YearClose - YearOpen</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Cells(SummaryTableRow, 11).Value = (YearClose - YearOpen) / YearOpen</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Start = i + 1</p>
+<p class="p1"><span class="Apple-converted-space">        </span>StockVolume = 0</p>
+<p class="p1"><span class="Apple-converted-space">        </span>SummaryTableRow = SummaryTableRow + 1</p>
+<p class="p2"><br></p>
+<p class="p4"><span class="s2"><span class="Apple-converted-space">    </span></span>Else</p>
+<p class="p3"><span class="s2"><span class="Apple-converted-space">        </span></span>' Assigning StockVolume calculation back to the current running StockValue</p>
+<p class="p1"><span class="Apple-converted-space">        </span>StockVolume = StockVolume + Cells(i, 7).Value</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p4"><span class="s2"><span class="Apple-converted-space">    </span></span>End<span class="s2"> </span>If</p>
+<p class="p2"><br></p>
+<p class="p4">Next<span class="s2"> i</span></p>
+<p class="p2"><br></p>
+<p class="p3">'set all headers</p>
+<p class="p1">Cells(1, 9).Value = "Ticker"</p>
+<p class="p1">Cells(1, 10).Value = "Yearly Change"</p>
+<p class="p1">Cells(1, 11).Value = "Percent Change"</p>
+<p class="p1">Cells(1, 12).Value = "Total Stock Volume"</p>
+<p class="p2"><br></p>
+<p class="p3">'column K has to be in percentage format</p>
+<p class="p1">Columns("K").NumberFormat = "0.00%"</p>
+<p class="p2"><br></p>
+<p class="p3">'conditional formatting for column J</p>
+<p class="p1"><span class="s1">Dim</span> Ran <span class="s1">As</span> Range</p>
+<p class="p4">Dim<span class="s2"> k </span>As<span class="s2"> </span>Long</p>
+<p class="p4">Dim<span class="s2"> l </span>As<span class="s2"> </span>Long</p>
+<p class="p1"><span class="s1">Dim</span> CellColor <span class="s1">As</span> Range</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">Set</span> Ran = Range("j2", Range("j2").End(xlDown))</p>
+<p class="p1">l = Ran.Cells.Count</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">For</span> k = 1 <span class="s1">To</span> l</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="s1">Set</span> CellColor = Ran(k)</p>
+<p class="p1"><span class="s1">Select</span> <span class="s1">Case</span> CellColor</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span><span class="s1">Case</span> <span class="s1">Is</span> &gt;= 0</p>
+<p class="p1"><span class="Apple-converted-space">        </span><span class="s1">With</span> CellColor</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.Interior.Color = vbGreen</p>
+<p class="p1"><span class="Apple-converted-space">        </span><span class="s1">End</span> <span class="s1">With</span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span><span class="s1">Case</span> <span class="s1">Is</span> &lt; 0</p>
+<p class="p1"><span class="Apple-converted-space">        </span><span class="s1">With</span> CellColor</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.Interior.Color = vbRed</p>
+<p class="p1"><span class="Apple-converted-space">        </span><span class="s1">End</span> <span class="s1">With</span></p>
+<p class="p2"><br></p>
+<p class="p4">End<span class="s2"> </span>Select</p>
+<p class="p2"><br></p>
+<p class="p4">Next<span class="s2"> k</span></p>
+<p class="p2"><br></p>
+<p class="p4">End<span class="s2"> </span>Sub</p>
+</body>
+</html>
